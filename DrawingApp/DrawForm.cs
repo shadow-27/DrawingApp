@@ -12,6 +12,7 @@ using System.Windows.Forms;
 namespace winforms_image_processor
 {
     public enum DrawingShape { EMPTY, LINE, CIRCLE, POLY, CAPS, RECT, CPOLY, FILL };
+   
 
     public partial class DrawForm : Form
     {
@@ -34,7 +35,7 @@ namespace winforms_image_processor
             toolsToolStripMenuItem.Enabled = true;
         }
 
-        Color backColor = Color.Green;
+        Color backColor = Color.White;
         Bitmap NewBitmap()
         {
             var bmp = new Bitmap(pictureBox1.Width, pictureBox1.Height);
@@ -73,9 +74,7 @@ namespace winforms_image_processor
             Bitmap bmp = NewBitmap();
             foreach (var shape in shapes)
             {
-                //if (shape.shapeType == DrawingShape.FILL)
-                  //  bmp = FloodFiller.FourWayFloodFill(bmp, shape.shapeColor, ((Fill)shape).seedPoint);
-                //else
+               
                     DrawShape(bmp, shape);
             }
 
@@ -91,9 +90,6 @@ namespace winforms_image_processor
 
             foreach (var shape in shapes)
             {
-                //if (shape.shapeType == DrawingShape.FILL)
-                //  bmp = FloodFiller.FourWayFloodFill(bmp, shape.shapeColor, ((Fill)shape).seedPoint);
-                //else
                 SuperDrawShape(bmp, shape);
             }
 
@@ -207,18 +203,7 @@ namespace winforms_image_processor
                     drawMode(false);
             }
 
-            /*  if (clipping)
-              {
-                  if (1 == currentShape.AddPoint(e.Location))
-                      clipMode(false, null);
-              }
-
-              if (flooding)
-              {
-                  shapes.Add(new Fill(colorDialog1.Color, e.Location));
-                  flooding = false;
-                  RefreshShapes();
-              }*/
+            
         }
 
         private void midpointCircleToolStripMenuItem_Click(object sender, EventArgs e)
@@ -297,7 +282,7 @@ namespace winforms_image_processor
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
 
             saveFileDialog1.InitialDirectory = "c:\\Downloads";
-            saveFileDialog1.Filter = "Vector shapes (*.cg2020)|*.cg2020";
+            saveFileDialog1.Filter = "Vector shapes (*.cg2022)|*.cg2022";
             saveFileDialog1.DefaultExt = "dat";
             saveFileDialog1.AddExtension = true;
             saveFileDialog1.Title = "Save the filtered image";
@@ -319,7 +304,7 @@ namespace winforms_image_processor
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.InitialDirectory = "c:\\Downloads";
-                openFileDialog.Filter = "Vector shapes (*.cg2020)|*.cg2020";
+                openFileDialog.Filter = "Vector shapes (*.cg2022)|*.cg2022";
                 openFileDialog.FilterIndex = 2;
                 openFileDialog.RestoreDirectory = true;
 

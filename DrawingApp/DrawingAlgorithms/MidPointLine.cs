@@ -80,10 +80,8 @@ namespace winforms_image_processor
         {
             Line line = new Line(startPoint.Value, endPoint.Value);
 
-            //if (clipper != null && !clipper.ClipLine(ref line))
-               // return new List<ColorPoint>();
-
-            return GuptaSproullAlgorithm(bmp, line.Start, line.End);
+           
+            return XiaolinWu_Line(line.Start,line.End);
         }
 
 
@@ -272,316 +270,131 @@ namespace winforms_image_processor
 
             return points;
         }
-    
 
 
-        private void plotLineHigh(List<ColorPoint> points, int x0, int y0, int x1, int y1)
+
+
+
+
+
+
+        List<ColorPoint> XiaolinWu_Line(Point point1, Point point2)
         {
-            int dx = x1 - x0 ;
-            int dy = y1 - y0 ;
-            int xi = 1;
-            if (dx < 0)
-            {
-                xi = -1;
-                dx = -dx;
-            }
-
-            int D = (2 * dx) - dy;
-            int x = x0;
-
-            for (int y = y0; y < y1; y1++)
-            {
-                points.Add(new ColorPoint(shapeColor, new Point(x, y)));
-                if (D > 0)
-                {
-                    x = x + xi;
-                    D = D + (2 * (dx - dy));
-                }
-
-                else
-                {
-                    D = D + 2 * dx;
-                }
-                
-            }
-
-           
-
-
-        }
-
-        private void plotLineLow(List<ColorPoint> points, int x0, int y0,int x1,int y1)
-        {
-            int dx = x1 - x0;
-            int dy = y1 - y0;
-            int yi = 1;
-            if (dy < 0)
-            {
-                yi = -1;
-                dy = -dy;
-            }
-
-            int D = (2 * dy) - dx;
-            int y = y0;
-
-            for (int x = x0; x < x1; x++)
-            {
-                points.Add(new ColorPoint(shapeColor,new Point(x,y)));
-                if (D > 0)
-                {
-                    y = y + yi;
-                    D += (2 * (dy - dx));
-                }
-                else
-                {
-                    D += 2 * dy;
-                }
-            }
-
-
-        }
-
-        private List<ColorPoint> plotLine(Point start, Point end)
-        {
-            List<ColorPoint> points = new List<ColorPoint>();
-            int x0 = start.X;
-            int y0 = start.Y;
-            int x1 = end.X;
-            int y1 = end.Y;
-            if (Math.Abs((y1 - y0)) < Math.Abs((x1 - x0)))
-            {
-                if (x0 > x1)
-                    plotLineLow(points, x1, y1, x0, y0);
-
-                else
-                    plotLineLow(points, x0, y0, x1, y1);
-
-            }
-            else
-            {
-                if (y0 > y1)
-                    plotLineHigh(points, x1, y1, x0, y0);
-
-                else
-                    plotLineHigh(points, x0, y0, x1, y1);
-
-            }
-
-            return points;
-        }
-            
-       
-
-
-
-        List<ColorPoint> BresenhamMidPointAlgorithm(Point start, Point end)
-        // https://stackoverflow.com/questions/11678693/all-cases-covered-bresenhams-line-algorithm
-        {
-            /* List<ColorPoint> points = new List<ColorPoint>();
-
-             int x = start.X, y = start.Y;
-             int x2 = end.X, y2 = end.Y;
-
-             int w = x2 - x;
-             int h = y2 - y;
-             int dx1 = 0, dy1 = 0, dx2 = 0, dy2 = 0;
-             if (w < 0) dx1 = -1; else if (w > 0) dx1 = 1;
-             if (h < 0) dy1 = -1; else if (h > 0) dy1 = 1;
-             if (w < 0) dx2 = -1; else if (w > 0) dx2 = 1;
-             int longest = Math.Abs(w);
-             int shortest = Math.Abs(h);
-             if (!(longest > shortest))
-             {
-                 longest = Math.Abs(h);
-                 shortest = Math.Abs(w);
-                 if (h < 0) dy2 = -1; else if (h > 0) dy2 = 1;
-                 dx2 = 0;
-             }
-             int numerator = longest >> 1;
-             for (int i = 0; i <= longest; i++)
-             {
-                 points.Add(new ColorPoint(shapeColor, new Point(x, y)));
-                 if (Math.Abs(h) > Math.Abs(w))
-                     for (int j = 1; j < thickness; j++)
-                     {
-                         points.Add(new ColorPoint(shapeColor, new Point(x - j, y)));
-                         points.Add(new ColorPoint(shapeColor, new Point(x + j, y)));
-                     }
-                 else if (Math.Abs(w) > Math.Abs(h))
-                     for (int j = 1; j < thickness; j++)
-                     {
-                         points.Add(new ColorPoint(shapeColor, new Point(x - j, y)));
-                         points.Add(new ColorPoint(shapeColor, new Point(x + j, y)));
-                     }
-
-                 numerator += shortest;
-                 if (!(numerator < longest))
-                 {
-                     numerator -= longest;
-                     x += dx1;
-                     y += dy1;
-                 }
-                 else
-                 {
-                     x += dx2;
-                     y += dy2;
-                 }
-             }
-
-             return points;*/
+            //Source: http://rosettacode.org/wiki/Xiaolin_Wu's_line_algorithm
 
             List<ColorPoint> points = new List<ColorPoint>();
-
-            int x1 = start.X, y1 = start.Y;
-            int x2 = end.X, y2 = end.Y;
-
-            int dx = x2 - x1;
-            int dy = y2 - y1;
-           // int dx1 = 0, dy1 = 0, dx2 = 0, dy2 = 0;
-            int d = 2 * dy - dx;
-            int dE = 2 * dy;
-            int dNE = 2 * (dy - dx);
-            int xf = x1, yf = y1;
-            int xb = x2, yb = y2;
-            points.Add(new ColorPoint(shapeColor,new Point(xf,yf)));  //putPixel(xf, yf);
-            points.Add(new ColorPoint(shapeColor, new Point(xb, yb)));//putPixel(xb, yb);
-            while (xf < xb)
+            bool direction = Math.Abs(point2.Y - point1.Y) > Math.Abs(point2.X - point1.X);
+            if (direction)//replace x and y
             {
-                ++xf; --xb;
-                if (d < 0)
-                    d += dE;
+                Point tmp = new Point(point1.X, point1.Y);
+                Point tmp2 = new Point(point2.X, point2.Y);
+                point1 = new Point(tmp.Y, tmp.X);
+                point2 = new Point(tmp2.Y, tmp2.X);
+            }
+            if (point1.X > point2.X)//replace points
+            {
+                Point tmp = new Point(point1.X, point1.Y);
+                Point tmp2 = new Point(point2.X, point2.Y);
+                point1 = new Point(tmp2.X, tmp2.Y);
+                point2 = new Point(tmp.X, tmp.Y);
+            }
+            double dx = point2.X - point1.X;
+            double dy = point2.Y - point1.Y;
+            double gradient = (double)((double)(dy) / (double)(dx));
+            //first point
+            int endX = round(point1.X);
+            double endY = point1.Y + gradient * (endX - point1.X);
+            double gapX = rfPart(point1.X + 0.5);
+            int pxlX_1 = endX;
+            int pxlY_1 = iPart(endY);
+            if (direction)
+            {
+                Point a = new Point(pxlY_1, pxlX_1);
+                ColorPoint b = new ColorPoint(shapeColor, new Point(pxlY_1, pxlX_1));
+                points.Add(b);
+                b = new ColorPoint(shapeColor, new Point(pxlY_1 + 1, pxlX_1));
+                points.Add(b);
+            }
+            else
+            {
+                Point a = new Point(pxlX_1, pxlY_1);
+                ColorPoint b = new ColorPoint(shapeColor, new Point(pxlX_1, pxlY_1));
+                points.Add(b);
+                b = new ColorPoint(shapeColor, new Point(pxlX_1, pxlY_1 + 1));
+                points.Add(b);
+            }
+            double intery = endY + gradient;
+
+            //second point
+            endX = round(point2.X);
+            endY = point2.Y + gradient * (endX - point2.X);
+            gapX = fPart(point2.X + 0.5);
+            int pxlX_2 = endX;
+            int pxlY_2 = iPart(endY);
+            if (direction)
+            {
+                Point a = new Point(pxlY_2, pxlX_2);
+                ColorPoint b = new ColorPoint(shapeColor, new Point(pxlY_2, pxlX_2));
+                points.Add(b);
+                b = new ColorPoint(shapeColor, new Point(pxlY_2 + 1, pxlX_2));
+                points.Add(b);
+            }
+            else
+            {
+                Point a = new Point(pxlX_2, pxlY_2);
+                ColorPoint b = new ColorPoint(shapeColor, new Point(pxlX_2, pxlY_2));
+                points.Add(b);
+                b = new ColorPoint(shapeColor, new Point(pxlX_2, pxlY_2 + 1));
+                points.Add(b);
+            }
+
+            //loop from all points
+            for (double x = (pxlX_1 + 1); x <= (pxlX_2 - 1); x++)
+            {
+                if (direction)
+                {
+                    Point a = new Point(iPart(intery), (int)x);
+                    ColorPoint b = new ColorPoint(shapeColor, new Point(iPart(intery), (int)x));
+                    points.Add(b);
+                    b = new ColorPoint(shapeColor, new Point(iPart(intery) + 1, (int)x));
+                    points.Add(b);
+                }
                 else
                 {
-                    d += dNE;
-                    ++yf;
-                        --yb;
+                    Point a = new Point((int)x, iPart(intery));
+                    ColorPoint b = new ColorPoint(shapeColor, new Point((int)x, iPart(intery)));
+                    points.Add(b);
+                    b = new ColorPoint(shapeColor, new Point((int)x, iPart(intery) + 1));
+                    points.Add(b);
                 }
-                points.Add(new ColorPoint(shapeColor, new Point(xf, yf)));//putPixel(xf, yf);
-                points.Add(new ColorPoint(shapeColor, new Point(xb, yb)));//putPixel(xb, yb);
+                intery += gradient;
             }
-            while (yf < yb)
-            {
-                ++yf; --yb;
-                if (d < 0)
-                    d += dE;
-                else
-                {
-                    d -= dNE;
-                    ++xb;
-                    --xf;
-                }
-                points.Add(new ColorPoint(shapeColor, new Point(xf, yf)));//putPixel(xf, yf);
-                points.Add(new ColorPoint(shapeColor, new Point(xb, yb)));//putPixel(xb, yb);
-            }
-
-
 
             return points;
-           
-
-
-
         }
 
-        List<ColorPoint> GuptaSproullAlgorithm(Bitmap bmp, Point start, Point end)
-        // http://elynxsdk.free.fr/ext-docs/Rasterization/Antialiasing/Gupta%20sproull%20antialiased%20lines.htm
-        // https://jamesarich.weebly.com/uploads/1/4/0/3/14035069/480xprojectreport.pdf
+        //functions for calculating
+        int iPart(double d)
         {
-            var points = new List<ColorPoint>();
-
-            int x1 = start.X, y1 = start.Y;
-            int x2 = end.X, y2 = end.Y;
-
-            int dx = x2 - x1;
-            int dy = y2 - y1;
-
-            int du, dv, u, x, y, ix, iy;
-
-            // By switching to (u,v), we combine all eight octant
-            int adx = dx < 0 ? -dx : dx;
-            int ady = dy < 0 ? -dy : dy;
-            x = x1;
-            y = y1;
-            if (adx > ady)
-            {
-                du = adx;
-                dv = ady;
-                u = x2;
-                ix = dx < 0 ? -1 : 1;
-                iy = dy < 0 ? -1 : 1;
-            }
-            else
-            {
-                du = ady;
-                dv = adx;
-                u = y2;
-                ix = dx < 0 ? -1 : 1;
-                iy = dy < 0 ? -1 : 1;
-            }
-
-            int uEnd = u + du;
-            int d = (2 * dv) - du; // Initial value as in Bresenham's
-            int incrS = 2 * dv; // Δd for straight increments
-            int incrD = 2 * (dv - du); // Δd for diagonal increments
-            int twovdu = 0; // Numerator of distance
-            double invD = 1.0 / (2.0 * Math.Sqrt(du * du + dv * dv)); // Precomputed inverse denominator
-            double invD2du = 2.0 * (du * invD); // Precomputed constant
-
-            if (adx > ady)
-            {
-                do
-                {
-                    points.Add(newColorPixel(bmp, x, y, twovdu * invD));
-                    points.Add(newColorPixel(bmp, x, y + iy, invD2du - twovdu * invD));
-                    points.Add(newColorPixel(bmp, x, y - iy, invD2du + twovdu * invD));
-
-
-                    if (d < 0)
-                    {
-                        // Choose straight
-                        twovdu = d + du;
-                        d += incrS;
-
-                    }
-                    else
-                    {
-                        // Choose diagonal
-                        twovdu = d - du;
-                        d += incrD;
-                        y += iy;
-                    }
-                    u++;
-                    x += ix;
-                } while (u < uEnd);
-            }
-            else
-            {
-                do
-                {
-                    points.Add(newColorPixel(bmp, x, y, twovdu * invD));
-                    points.Add(newColorPixel(bmp, x, y + iy, invD2du - twovdu * invD));
-                    points.Add(newColorPixel(bmp, x, y - iy, invD2du + twovdu * invD));
-
-                    if (d < 0)
-                    {
-                        // Choose straight
-                        twovdu = d + du;
-                        d += incrS;
-                    }
-                    else
-                    {
-                        // Choose diagonal
-                        twovdu = d - du;
-                        d += incrD;
-                        x += ix;
-                    }
-                    u++;
-                    y += iy;
-                } while (u < uEnd);
-            }
-
-            return points;
+            return (int)d;
         }
+
+        int round(double d)
+        {
+            return (int)(d + 0.50000);
+        }
+
+        double fPart(double d)
+        {
+            return (double)(d - (int)(d));
+        }
+
+        double rfPart(double d)
+        {
+            return (double)(1.00000 - (double)(d - (int)(d)));
+        }
+
+
 
         ColorPoint newColorPixel(Bitmap bmp, int x, int y, double dist)
         {
@@ -607,7 +420,7 @@ namespace winforms_image_processor
         public override List<ColorPoint> SuperGetPixels(params object[] param)
         {
             Line line = new Line(startPoint.Value, endPoint.Value);
-            return BresenhamMidPointAlgorithm(line.Start, line.End);
+            return SymmetricMidpointLine(line.Start, line.End);
 
 
         }
