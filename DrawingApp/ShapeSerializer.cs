@@ -51,7 +51,10 @@ namespace winforms_image_processor
                         case DrawingShape.LINE:
                             formatter.Serialize(stream, (MidPointLine)shaped);
                             break;
-                       
+                        case DrawingShape.POLY:
+                            formatter.Serialize(stream, (Polygon)shaped);
+                            break;
+
                     }
                 }
             }

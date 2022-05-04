@@ -95,26 +95,47 @@ namespace winforms_image_processor
 
             // division by zero is turned into Infinity; which here is correct
             int slope = Math.Abs((p2.Y - p1.Y) / (p2.X - p1.X));
-            
+
+            int w = p2.X - p1.X;
+            int h = p2.Y -p1.Y;
+            int dx1 = 0, dy1 = 0, dx2 = 0, dy2 = 0;
+
+            if (w < 0) dx1 = -1; else if (w > 0) dx1 = 1;
+            if (h < 0) dy1 = -1; else if (h > 0) dy1 = 1;
+            if (w < 0) dx2 = -1; else if (w > 0) dx2 = 1;
+
+            int longest = Math.Abs(w);
+            int shortest = Math.Abs(h);
+
+            if (longest <= shortest)
+            {
+                longest = Math.Abs(h);
+                shortest = Math.Abs(w);
+                if (h < 0) dy2 = -1; else if (h > 0) dy2 = 1;
+                dx2 = 0;
+            }
+
+            int numerator = longest >> 1;
+
 
             // slope > 1 means we are in the 2nd, 3rd, 6th, or 7th octant: flip the axes
             if (slope > 1)
             {
-
+                
 
 
 
                 if (p1.Y < p2.Y)
                 {
-                    p1 = p1;
-                    p2 = p2;
+                    //p1 = p1;
+                    //p2 = p2;
                 }
                 else
                 {
                     Point temp;
-                    temp = p1;
-                    p1 = p2;
-                    p2 = temp;
+                    temp = new Point(p1.X,p1.Y);
+                    p1 = new Point(p2.X,p2.Y);
+                    p2 = new Point(temp.X,temp.Y);
                 }
 
                 int dx = p2.X - p1.X;
@@ -124,8 +145,8 @@ namespace winforms_image_processor
                 int dE = 2 * delta.X;
                 int dNE = 2 * (delta.X - delta.Y);
                 int dSE = 2 * (delta.X + delta.Y);
-                Point f = p1;
-                Point b = p2;
+                Point f = new Point(p1.X,p1.Y);
+                Point b = new Point(p2.X,p2.Y);
 
                 // 3rd or 6th octant:
                 if (p1.X < p2.X)
@@ -137,12 +158,13 @@ namespace winforms_image_processor
 
                     do
                     {
-                        points.Add(new ColorPoint(shapeColor, new Point(f.X,f.Y)));
-                        points.Add(new ColorPoint(shapeColor, new Point(b.X, b.Y)));
+                        fillThickness(points, w, h, f, b);
+                        points.Add(new ColorPoint(shapeColor, new Point(f.X,b.Y)));
+                        points.Add(new ColorPoint(shapeColor, new Point(f.X, b.Y)));
 
-
-                        f = new Point(f.X+0, f.Y+1);
-                        b = new Point(b.X+0, b.Y-1);
+                       // points = points1;
+                         f = new Point(p1.X+0, p1.Y+1);
+                         b = new Point(p1.X+0, p1.Y-1);
                         if (d < 0)
                         {
                             d += dE;
@@ -153,7 +175,7 @@ namespace winforms_image_processor
                             f = new Point(f.X + fNE.X, f.Y + fNE.Y);
                             b = new Point(b.X + bNE.X, b.Y +bNE.Y);
                         }
-                    } while (f.Y <= f.Y);
+                    } while (f.X <= b.X);
                 }
                 else
                 {
@@ -164,6 +186,7 @@ namespace winforms_image_processor
 
                     do
                     {
+                        fillThickness(points, w, h, f, b);
                         points.Add(new ColorPoint(shapeColor, new Point(f.X, f.Y)));
                         points.Add(new ColorPoint(shapeColor, new Point(b.X, b.Y)));
 
@@ -187,15 +210,14 @@ namespace winforms_image_processor
             {
                 if (p1.X < p2.X)
                 {
-                    p1 = p1;
-                    p2 = p2;
+                    
                 }
                 else
                 {
                     Point temp;
-                    temp=p1;
-                    p1 = p2;
-                    p2 = temp;
+                    temp = new Point(p1.X, p1.Y);
+                    p1 = new Point(p2.X, p2.Y);
+                    p2 = new Point(temp.X, temp.Y);
                 }
                 int dx = p2.X - p1.X;
                 int dy = p2.Y - p1.Y;
@@ -218,6 +240,7 @@ namespace winforms_image_processor
 
                     do
                     {
+                        fillThickness(points, w, h, f, b);
                         points.Add(new ColorPoint(shapeColor, new Point(f.X, f.Y)));
                         points.Add(new ColorPoint(shapeColor, new Point(b.X, b.Y)));
 
@@ -246,6 +269,7 @@ namespace winforms_image_processor
 
                     do
                     {
+                        fillThickness(points, w, h, f, b);
                         points.Add(new ColorPoint(shapeColor, new Point(f.X, f.Y)));
                         points.Add(new ColorPoint(shapeColor, new Point(b.X, b.Y)));
 
@@ -272,7 +296,25 @@ namespace winforms_image_processor
         }
 
 
-
+        private void fillThickness(List<ColorPoint> points, int w, int h, Point f, Point b)
+        {
+            if (Math.Abs(h) > Math.Abs(w))
+            {
+                for (int j = 1; j < thickness; j++)
+                {
+                    points.Add(new ColorPoint(shapeColor, new Point(f.X - j, f.Y)));
+                    points.Add(new ColorPoint(shapeColor, new Point(b.X - j, b.Y)));
+                }
+            }
+            else if (Math.Abs(w) > Math.Abs(h))
+            {
+                for (int j = 1; j < thickness; j++)
+                {
+                    points.Add(new ColorPoint(shapeColor, new Point(f.X, f.Y - j)));
+                    points.Add(new ColorPoint(shapeColor, new Point(b.X, b.Y - j)));
+                }
+            }
+        }
 
 
 

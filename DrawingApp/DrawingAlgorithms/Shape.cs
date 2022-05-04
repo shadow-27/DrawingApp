@@ -21,7 +21,7 @@ namespace winforms_image_processor
     }
 
     [Serializable]
-    abstract class Shape
+     abstract class Shape
     {
         public DrawingShape shapeType;
         public Color shapeColor;

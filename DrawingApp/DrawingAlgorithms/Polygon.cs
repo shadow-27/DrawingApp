@@ -52,7 +52,8 @@ namespace winforms_image_processor
             return returnValue;
         }
 
-       
+
+        
 
         public override List<ColorPoint> GetPixels(params object[] param)
         {

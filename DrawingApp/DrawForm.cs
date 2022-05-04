@@ -74,8 +74,7 @@ namespace winforms_image_processor
             Bitmap bmp = NewBitmap();
             foreach (var shape in shapes)
             {
-               
-                    DrawShape(bmp, shape);
+                DrawShape(bmp, shape);
             }
 
             pictureBox1.Image = bmp;
@@ -149,11 +148,11 @@ namespace winforms_image_processor
         Shape currentShape = null;
         DrawingShape currentDrawingShape = DrawingShape.EMPTY;
 
-        bool canRefresh = true;
+       // bool canRefresh = true;
 
         bool drawing = false;
         bool moving = false;
-        bool clipping = false;
+       // bool clipping = false;
         int index;
 
         void drawMode(
@@ -165,8 +164,7 @@ namespace winforms_image_processor
             if (!status && index == -1)
             {
                 shapes.Add(currentShape);
-                if (shapes.Count == 1)
-                    listBox1_SelectedIndexChanged(null, null);
+                
                 RefreshShapes();
             }
             else if (!status)
@@ -222,14 +220,6 @@ namespace winforms_image_processor
 
 
 
-        bool flooding = false;
-
-        private void floodFillToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            flooding = true;
-        }
-
-      
 
         
 
@@ -272,7 +262,7 @@ namespace winforms_image_processor
 
             shapes.RemoveAt(listBox1.SelectedIndex);
 
-            listBox1_SelectedIndexChanged(null, null);
+          
 
             RefreshShapes();
         }
@@ -281,11 +271,8 @@ namespace winforms_image_processor
         {
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
 
-            saveFileDialog1.InitialDirectory = "c:\\Downloads";
             saveFileDialog1.Filter = "Vector shapes (*.cg2022)|*.cg2022";
-            saveFileDialog1.DefaultExt = "dat";
-            saveFileDialog1.AddExtension = true;
-            saveFileDialog1.Title = "Save the filtered image";
+            saveFileDialog1.Title = "Save the drawing image";
             saveFileDialog1.ShowDialog();
 
             if (saveFileDialog1.FileName != "")
@@ -303,11 +290,9 @@ namespace winforms_image_processor
 
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                openFileDialog.InitialDirectory = "c:\\Downloads";
+               
                 openFileDialog.Filter = "Vector shapes (*.cg2022)|*.cg2022";
-                openFileDialog.FilterIndex = 2;
-                openFileDialog.RestoreDirectory = true;
-
+                
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     shapes.Clear();
@@ -378,25 +363,7 @@ namespace winforms_image_processor
             RefreshShapes();
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (shapes.Count < 1)
-            {
-                //button4.Enabled = false;
-                //button5.Enabled = false;
-                return;
-            }
-
-            if (listBox1.SelectedIndex == -1)
-            {
-                //button4.Enabled = false;
-                //button5.Enabled = false;
-                return;
-            }
-
-            //button4.Enabled = (((Shape)listBox1.SelectedItem).shapeType == DrawingShape.POLY || ((Shape)listBox1.SelectedItem).shapeType == DrawingShape.CPOLY) ? true : false;
-            //button5.Enabled = (((Shape)listBox1.SelectedItem).shapeType == DrawingShape.POLY || ((Shape)listBox1.SelectedItem).shapeType == DrawingShape.CPOLY) ? true : false;
-        }
+       
 
         private void selectColorToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -419,6 +386,16 @@ namespace winforms_image_processor
 
 
 
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (shapes.Count == 0)
+                return;
+
+            shapes.Clear();
+
+            RefreshShapes();
         }
     }
 }
