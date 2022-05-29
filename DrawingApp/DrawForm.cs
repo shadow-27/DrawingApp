@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
+using DrawingApp;
 
 namespace winforms_image_processor
 {
@@ -72,9 +73,14 @@ namespace winforms_image_processor
         void RefreshShapes()
         {
             Bitmap bmp = NewBitmap();
+            int i = 0;
             foreach (var shape in shapes)
             {
-                DrawShape(bmp, shape);
+                i++;
+                if (shape.shapeType == DrawingShape.FILL)
+                    bmp = FloodFiller.FourWayBoundryFill(bmp,Color.Black, shape.shapeColor, ((Fill)shape).seedPoint);
+                else
+                    DrawShape(bmp, shape);
             }
 
             pictureBox1.Image = bmp;
@@ -98,7 +104,7 @@ namespace winforms_image_processor
         Bitmap DrawShape(Bitmap bmp, Shape shape)
         {
             if (!antialiasingToolStripMenuItem.Checked || !shape.supportsAA)
-                foreach (var point in shape.GetPixels(colorDialog2.Color, bmp))
+                foreach (var point in shape.GetPixels(showClipBorderToolStripMenuItem.Checked,colorDialog2.Color, bmp))
                 {
                     if (point.Point.X >= pictureBox1.Width || point.Point.Y >= pictureBox1.Height || point.Point.X <= 0 || point.Point.Y <= 0)
                         continue;
@@ -144,15 +150,16 @@ namespace winforms_image_processor
             return bmp;
         }
 
+        bool flooding = false;
 
         Shape currentShape = null;
         DrawingShape currentDrawingShape = DrawingShape.EMPTY;
 
-       // bool canRefresh = true;
+        bool canRefresh = true;
 
         bool drawing = false;
         bool moving = false;
-       // bool clipping = false;
+        bool clipping = false;
         int index;
 
         void drawMode(
@@ -164,7 +171,8 @@ namespace winforms_image_processor
             if (!status && index == -1)
             {
                 shapes.Add(currentShape);
-                
+               
+
                 RefreshShapes();
             }
             else if (!status)
@@ -201,7 +209,21 @@ namespace winforms_image_processor
                     drawMode(false);
             }
 
-            
+            if (clipping)
+            {
+                if (1 == currentShape.AddPoint(e.Location))
+                    clipMode(false, null);
+            }
+
+            if (flooding)
+            {
+                shapes.Add(new Fill(colorDialog1.Color, e.Location));
+                flooding = false;
+                RefreshShapes();
+            }
+
+
+
         }
 
         private void midpointCircleToolStripMenuItem_Click(object sender, EventArgs e)
@@ -247,6 +269,9 @@ namespace winforms_image_processor
                 case DrawingShape.POLY:
                 case DrawingShape.CPOLY:
                     drawMode(true, new Polygon(colorDialog1.Color, (int)numericUpDown1.Value), listBox1.SelectedIndex);
+                    break;
+                case DrawingShape.RECT:
+                    drawMode(true, new Rectangle(colorDialog1.Color, (int)numericUpDown1.Value), listBox1.SelectedIndex);
                     break;
 
                 default:
@@ -396,6 +421,97 @@ namespace winforms_image_processor
             shapes.Clear();
 
             RefreshShapes();
+        }
+
+        private void rectangleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            drawMode(true, new Rectangle(colorDialog1.Color, (int)numericUpDown1.Value));
+        }
+
+        void clipMode(bool status, Shape shape, int modify_index = -1)
+        {
+            if (!status && shapes[index].shapeType == DrawingShape.POLY)
+            {
+                ClippedPolygon cpoly = new ClippedPolygon((Polygon)shapes[index]);
+                cpoly.SetBoundingRect((Rectangle)currentShape);
+                shapes[index] = cpoly;
+                RefreshShapes();
+            }
+            else if (!status && shapes[index].shapeType == DrawingShape.CPOLY)
+            {
+                ((ClippedPolygon)shapes[index]).SetBoundingRect((Rectangle)currentShape);
+                RefreshShapes();
+            }
+
+            splitContainer2.Panel1.Enabled = !status;
+
+            index = modify_index;
+            clipping = status;
+
+            currentDrawingShape = shape == null ? DrawingShape.EMPTY : shape.shapeType;
+            currentShape = shape;
+            UpdateLabel();
+        }
+
+        private void clipButton_Click(object sender, EventArgs e)
+        {
+            clipMode(true, new Rectangle(Color.Red, 1), listBox1.SelectedIndex);
+        }
+
+        private void fillButton_Click(object sender, EventArgs e)
+        {
+            if (shapes.Count < 1)
+                return;
+
+            if ((listBox1.SelectedItem as Shape).shapeType != DrawingShape.POLY && (listBox1.SelectedItem as Shape).shapeType != DrawingShape.CPOLY)
+                return;
+
+            FillMenu fillMenuForm = new FillMenu();
+
+            switch (fillMenuForm.ShowDialog())
+            {
+                case DialogResult.Yes:
+                    (listBox1.SelectedItem as Polygon).SetFiller(fillMenuForm.FillColor);
+                    break;
+                case DialogResult.No:
+                    (listBox1.SelectedItem as Polygon).SetFiller(fillMenuForm.filename);
+                    break;
+                case DialogResult.Cancel:
+                default:
+                    break;
+            }
+
+            RefreshShapes();
+        }
+
+        private void boundryFillToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            flooding = true;
+        }
+
+        private void showClipBorderToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            RefreshShapes();
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (shapes.Count < 1)
+            {
+                clipButton.Enabled = false;
+                fillButton.Enabled = false;
+                return;
+            }
+
+            if (listBox1.SelectedIndex == -1)
+            {
+                clipButton.Enabled = false;
+                fillButton.Enabled = false;
+                return;
+            }
+
+            clipButton.Enabled = (((Shape)listBox1.SelectedItem).shapeType == DrawingShape.POLY || ((Shape)listBox1.SelectedItem).shapeType == DrawingShape.CPOLY) ? true : false;
+            fillButton.Enabled = (((Shape)listBox1.SelectedItem).shapeType == DrawingShape.POLY || ((Shape)listBox1.SelectedItem).shapeType == DrawingShape.CPOLY) ? true : false;
         }
     }
 }

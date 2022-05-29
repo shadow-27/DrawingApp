@@ -4,12 +4,11 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace winforms_image_processor
+namespace DrawingApp
 {
     public partial class FillMenu : Form
     {
@@ -17,13 +16,12 @@ namespace winforms_image_processor
         {
             InitializeComponent();
         }
-
-
         public Color FillColor
         {
             get { return colorDialog1.Color; }
         }
         public string filename;
+
         private void button1_Click(object sender, EventArgs e)
         {
             if (colorDialog1.ShowDialog() == DialogResult.OK)

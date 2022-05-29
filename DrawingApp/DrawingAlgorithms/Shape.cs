@@ -37,8 +37,7 @@ namespace winforms_image_processor
         abstract public List<ColorPoint> GetPixelsAA(Bitmap bmp);
 
         abstract public List<ColorPoint> GetPixels(params object[] param);
-        // Params:
-        // [0] : bool for clip border draw
+       
         abstract public List<ColorPoint> SuperGetPixels(params object[] param);
 
 

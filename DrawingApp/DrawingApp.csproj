@@ -55,10 +55,14 @@
     <Compile Include="DrawForm.Designer.cs">
       <DependentUpon>DrawForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="DrawingAlgorithms\ClippedPolygon.cs" />
+    <Compile Include="DrawingAlgorithms\Clipping.cs" />
     <Compile Include="DrawingAlgorithms\ColorInterpolator.cs" />
     <Compile Include="DrawingAlgorithms\Fill.cs" />
+    <Compile Include="DrawingAlgorithms\Filler.cs" />
     <Compile Include="DrawingAlgorithms\MidPointCircle.cs" />
-    <Compile Include="DrawingAlgorithms\MidPointLine.cs" />
+    <Compile Include="DrawingAlgorithms\Rectangle.cs" />
+    <Compile Include="DrawingAlgorithms\SymetricMidpointLine.cs" />
     <Compile Include="DrawingAlgorithms\Polygon.cs" />
     <Compile Include="DrawingAlgorithms\Shape.cs" />
     <Compile Include="FillMenu.cs">

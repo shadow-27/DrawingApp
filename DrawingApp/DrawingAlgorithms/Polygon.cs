@@ -12,8 +12,7 @@ namespace winforms_image_processor
     {
         public List<Point> points = null;
         public int thickness;
-
-        //protected Filler filler = null;
+        protected Filler filler = null;
 
         public Polygon(Color color, int thicc) : base(color)
         {
@@ -52,12 +51,30 @@ namespace winforms_image_processor
             return returnValue;
         }
 
+        public void SetFiller(Color color)
+        {
+            filler = new Filler(points, fillColor: color);
+        }
 
-        
+        public void SetFiller(string filename)
+        {
+            filler = new Filler(points, fillImage: new Bitmap(filename));
+        }
+
+        public void UnSetFiller()
+        {
+            filler = null;
+        }
+
+
+
 
         public override List<ColorPoint> GetPixels(params object[] param)
         {
             var pixels = new List<ColorPoint>();
+
+            if (filler != null)
+                pixels.AddRange(filler.FillPoints());
 
 
             for (int i = 0; i <= points.Count - 2; i++)
@@ -76,13 +93,15 @@ namespace winforms_image_processor
             for (int i = 0; i < points.Count; i++)
                 points[i] = points[i] + (Size)displacement;
 
-            
+            if (filler != null)
+                filler.UpdatePoints(points);
         }
 
         public override List<ColorPoint> GetPixelsAA(Bitmap bmp)
         {
             var pixels = new List<ColorPoint>();
-
+            if (filler != null)
+                pixels.AddRange(filler.FillPoints());
 
             for (int i = 0; i <= points.Count - 2; i++)
                 pixels.AddRange((new MidPointLine(shapeColor, thickness, points[i], points[i + 1])).GetPixelsAA(bmp));

@@ -37,13 +37,19 @@
             this.midpointLineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.midpointCircleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.polygonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rectangleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.antialiasingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.backgroundColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.superSamplingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showClipBorderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.boundryFillToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.fillButton = new System.Windows.Forms.Button();
+            this.clipButton = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -55,7 +61,6 @@
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.colorDialog2 = new System.Windows.Forms.ColorDialog();
             this.colorDialog3 = new System.Windows.Forms.ColorDialog();
-            this.button4 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -75,7 +80,8 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.toolsToolStripMenuItem,
-            this.settingsToolStripMenuItem});
+            this.settingsToolStripMenuItem,
+            this.boundryFillToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
@@ -119,7 +125,8 @@
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.midpointLineToolStripMenuItem,
             this.midpointCircleToolStripMenuItem,
-            this.polygonToolStripMenuItem});
+            this.polygonToolStripMenuItem,
+            this.rectangleToolStripMenuItem});
             this.toolsToolStripMenuItem.Enabled = false;
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(58, 24);
@@ -146,12 +153,20 @@
             this.polygonToolStripMenuItem.Text = "Polygon";
             this.polygonToolStripMenuItem.Click += new System.EventHandler(this.polygonToolStripMenuItem_Click_1);
             // 
+            // rectangleToolStripMenuItem
+            // 
+            this.rectangleToolStripMenuItem.Name = "rectangleToolStripMenuItem";
+            this.rectangleToolStripMenuItem.Size = new System.Drawing.Size(192, 26);
+            this.rectangleToolStripMenuItem.Text = "Rectangle";
+            this.rectangleToolStripMenuItem.Click += new System.EventHandler(this.rectangleToolStripMenuItem_Click);
+            // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.antialiasingToolStripMenuItem,
             this.backgroundColorToolStripMenuItem,
-            this.superSamplingToolStripMenuItem});
+            this.superSamplingToolStripMenuItem,
+            this.showClipBorderToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(76, 24);
             this.settingsToolStripMenuItem.Text = "Settings";
@@ -177,6 +192,21 @@
             this.superSamplingToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.superSamplingToolStripMenuItem.Text = "Super Sampling";
             this.superSamplingToolStripMenuItem.Click += new System.EventHandler(this.superSamplingToolStripMenuItem_Click);
+            // 
+            // showClipBorderToolStripMenuItem
+            // 
+            this.showClipBorderToolStripMenuItem.CheckOnClick = true;
+            this.showClipBorderToolStripMenuItem.Name = "showClipBorderToolStripMenuItem";
+            this.showClipBorderToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.showClipBorderToolStripMenuItem.Text = "Show Clip Border";
+            this.showClipBorderToolStripMenuItem.Click += new System.EventHandler(this.showClipBorderToolStripMenuItem_Click_1);
+            // 
+            // boundryFillToolStripMenuItem
+            // 
+            this.boundryFillToolStripMenuItem.Name = "boundryFillToolStripMenuItem";
+            this.boundryFillToolStripMenuItem.Size = new System.Drawing.Size(97, 24);
+            this.boundryFillToolStripMenuItem.Text = "BoundryFill";
+            this.boundryFillToolStripMenuItem.Click += new System.EventHandler(this.boundryFillToolStripMenuItem_Click);
             // 
             // splitContainer1
             // 
@@ -224,6 +254,8 @@
             // 
             // splitContainer2.Panel1
             // 
+            this.splitContainer2.Panel1.Controls.Add(this.fillButton);
+            this.splitContainer2.Panel1.Controls.Add(this.clipButton);
             this.splitContainer2.Panel1.Controls.Add(this.button4);
             this.splitContainer2.Panel1.Controls.Add(this.checkBox1);
             this.splitContainer2.Panel1.Controls.Add(this.button3);
@@ -240,6 +272,38 @@
             this.splitContainer2.SplitterDistance = 335;
             this.splitContainer2.SplitterWidth = 5;
             this.splitContainer2.TabIndex = 0;
+            // 
+            // fillButton
+            // 
+            this.fillButton.Enabled = false;
+            this.fillButton.Location = new System.Drawing.Point(130, 279);
+            this.fillButton.Name = "fillButton";
+            this.fillButton.Size = new System.Drawing.Size(75, 28);
+            this.fillButton.TabIndex = 8;
+            this.fillButton.Text = "Fill";
+            this.fillButton.UseVisualStyleBackColor = true;
+            this.fillButton.Click += new System.EventHandler(this.fillButton_Click);
+            // 
+            // clipButton
+            // 
+            this.clipButton.Enabled = false;
+            this.clipButton.Location = new System.Drawing.Point(4, 279);
+            this.clipButton.Name = "clipButton";
+            this.clipButton.Size = new System.Drawing.Size(84, 28);
+            this.clipButton.TabIndex = 7;
+            this.clipButton.Text = "Clip";
+            this.clipButton.UseVisualStyleBackColor = true;
+            this.clipButton.Click += new System.EventHandler(this.clipButton_Click);
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(102, 244);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(117, 23);
+            this.button4.TabIndex = 1;
+            this.button4.Text = "Remove all";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // checkBox1
             // 
@@ -338,17 +402,7 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(230, 315);
             this.listBox1.TabIndex = 0;
-            //this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(102, 244);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(117, 23);
-            this.button4.TabIndex = 1;
-            this.button4.Text = "Remove all";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // DrawForm
             // 
@@ -410,5 +464,10 @@
         private System.Windows.Forms.ToolStripMenuItem polygonToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem superSamplingToolStripMenuItem;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.ToolStripMenuItem rectangleToolStripMenuItem;
+        private System.Windows.Forms.Button clipButton;
+        private System.Windows.Forms.Button fillButton;
+        private System.Windows.Forms.ToolStripMenuItem boundryFillToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showClipBorderToolStripMenuItem;
     }
 }
