@@ -400,18 +400,7 @@ namespace winforms_image_processor
             drawMode(true, new Polygon(colorDialog1.Color, (int)numericUpDown1.Value));
         }
 
-        private void superSamplingToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            
-            Size size = new Size(2*this.Width, 2*this.Height);
-            this.Size = size;
-            this.Refresh();
-            SuperRefreshShapes();
-
-
-
-
-        }
+      
 
         private void button4_Click(object sender, EventArgs e)
         {
@@ -512,6 +501,13 @@ namespace winforms_image_processor
 
             clipButton.Enabled = (((Shape)listBox1.SelectedItem).shapeType == DrawingShape.POLY || ((Shape)listBox1.SelectedItem).shapeType == DrawingShape.CPOLY) ? true : false;
             fillButton.Enabled = (((Shape)listBox1.SelectedItem).shapeType == DrawingShape.POLY || ((Shape)listBox1.SelectedItem).shapeType == DrawingShape.CPOLY) ? true : false;
+        }
+
+        private void showRotatingCubeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form1 cube = new Form1();
+            cube.Show();
+           // this.Dispose(false);
         }
     }
 }

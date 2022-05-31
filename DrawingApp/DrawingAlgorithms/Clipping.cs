@@ -92,23 +92,24 @@ namespace winforms_image_processor
             return false;
         }
 
-        //public bool ClipLine(ref MidPointLine line)
+        //public bool ClipLine(ref Line line)
         //{
-        //    Point P = line.endPoint.Value - (Size)line.startPoint.Value;
+        //    Point P = line.End - (Size)line.Start;
         //    float tMinimum = 0, tMaximum = 1;
 
         //    ClippingHandler pqClip = delegate (float directedProjection,
         //    float directedDistance)
         //    {
-        //        if (directedProjection == 0)
+        //        if (directedProjection == 0) //Paralel line
         //        {
-        //            if (directedDistance < 0)
-        //                return false;
+        //            if (directedDistance > 0)
+        //                return false; ; // outside ‐ discard
+        //            return true;
         //        }
-        //        else
-        //        {
+
+
         //            float amount = directedDistance / directedProjection;
-        //            if (directedProjection < 0)
+        //            if (directedProjection > 0)
         //            {
         //                if (amount > tMaximum)
         //                    return false;
@@ -122,22 +123,22 @@ namespace winforms_image_processor
         //                else if (amount < tMaximum)
         //                    tMaximum = amount;
         //            }
-        //        }
+
         //        return true;
         //    };
 
-        //    if (pqClip(-P.X, line.startPoint.Value.X - _clipMin.X))
+        //    if (pqClip(-P.X, line.Start.X - _clipMin.X))
         //    {
-        //        if (pqClip(P.X, _clipMax.X - line.startPoint.Value.X))
+        //        if (pqClip(P.X, _clipMax.X - line.Start.X))
         //        {
-        //            if (pqClip(-P.Y, line.startPoint.Value.Y - _clipMin.Y))
+        //            if (pqClip(-P.Y, line.Start.Y - _clipMin.Y))
         //            {
-        //                if (pqClip(P.Y, _clipMax.Y - line.startPoint.Value.Y))
+        //                if (pqClip(P.Y, _clipMax.Y - line.Start.Y))
         //                {
         //                    if (tMaximum < 1)
-        //                        line.endPoint = new Point((int)(line.startPoint.Value.X + tMaximum * P.X), (int)(line.startPoint.Value.Y + tMaximum * P.Y));
+        //                        line.End = new Point((int)(line.Start.X + tMaximum * P.X), (int)(line.Start.Y + tMaximum * P.Y));
         //                    if (tMinimum > 0)
-        //                        line.startPoint = new Point((int)(line.startPoint.Value.X + tMinimum * P.X), (int)(line.startPoint.Value.Y + tMinimum * P.Y));
+        //                        line.Start = new Point((int)(line.Start.X + tMinimum * P.X), (int)(line.Start.Y + tMinimum * P.Y));
         //                    return true;
         //                }
         //            }
@@ -151,7 +152,6 @@ namespace winforms_image_processor
             return "Liang-Barsky algorithm";
         }
 
-        // This code was implemented by Grishul Eugeny as part of preparation
-        // to exam in ITMO university
+        
     }
 }

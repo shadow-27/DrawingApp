@@ -54,6 +54,19 @@ namespace winforms_image_processor
                         case DrawingShape.POLY:
                             formatter.Serialize(stream, (Polygon)shaped);
                             break;
+                        case DrawingShape.CPOLY:
+                            formatter.Serialize(stream, (ClippedPolygon)shaped);
+                            break;
+
+                        case DrawingShape.RECT:
+                            formatter.Serialize(stream, (Rectangle)shaped);
+                            break;
+                        case DrawingShape.FILL:
+                            formatter.Serialize(stream, (Fill)shaped);
+                            break;
+
+
+
 
                     }
                 }

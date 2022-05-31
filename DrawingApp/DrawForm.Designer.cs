@@ -61,6 +61,7 @@
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.colorDialog2 = new System.Windows.Forms.ColorDialog();
             this.colorDialog3 = new System.Windows.Forms.ColorDialog();
+            this.showRotatingCubeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -166,7 +167,8 @@
             this.antialiasingToolStripMenuItem,
             this.backgroundColorToolStripMenuItem,
             this.superSamplingToolStripMenuItem,
-            this.showClipBorderToolStripMenuItem});
+            this.showClipBorderToolStripMenuItem,
+            this.showRotatingCubeToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(76, 24);
             this.settingsToolStripMenuItem.Text = "Settings";
@@ -175,29 +177,29 @@
             // 
             this.antialiasingToolStripMenuItem.CheckOnClick = true;
             this.antialiasingToolStripMenuItem.Name = "antialiasingToolStripMenuItem";
-            this.antialiasingToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.antialiasingToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
             this.antialiasingToolStripMenuItem.Text = "Antialiasing";
             this.antialiasingToolStripMenuItem.CheckedChanged += new System.EventHandler(this.antialiasingToolStripMenuItem_CheckedChanged);
             // 
             // backgroundColorToolStripMenuItem
             // 
             this.backgroundColorToolStripMenuItem.Name = "backgroundColorToolStripMenuItem";
-            this.backgroundColorToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.backgroundColorToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
             this.backgroundColorToolStripMenuItem.Text = "Background Color";
             this.backgroundColorToolStripMenuItem.Click += new System.EventHandler(this.backgroundColorToolStripMenuItem_Click);
             // 
             // superSamplingToolStripMenuItem
             // 
             this.superSamplingToolStripMenuItem.Name = "superSamplingToolStripMenuItem";
-            this.superSamplingToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.superSamplingToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
             this.superSamplingToolStripMenuItem.Text = "Super Sampling";
-            this.superSamplingToolStripMenuItem.Click += new System.EventHandler(this.superSamplingToolStripMenuItem_Click);
+            //this.superSamplingToolStripMenuItem.Click += new System.EventHandler(this.superSamplingToolStripMenuItem_Click);
             // 
             // showClipBorderToolStripMenuItem
             // 
             this.showClipBorderToolStripMenuItem.CheckOnClick = true;
             this.showClipBorderToolStripMenuItem.Name = "showClipBorderToolStripMenuItem";
-            this.showClipBorderToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.showClipBorderToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
             this.showClipBorderToolStripMenuItem.Text = "Show Clip Border";
             this.showClipBorderToolStripMenuItem.Click += new System.EventHandler(this.showClipBorderToolStripMenuItem_Click_1);
             // 
@@ -404,6 +406,13 @@
             this.listBox1.TabIndex = 0;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
+            // showRotatingCubeToolStripMenuItem
+            // 
+            this.showRotatingCubeToolStripMenuItem.Name = "showRotatingCubeToolStripMenuItem";
+            this.showRotatingCubeToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
+            this.showRotatingCubeToolStripMenuItem.Text = "Show Rotating Cube";
+            this.showRotatingCubeToolStripMenuItem.Click += new System.EventHandler(this.showRotatingCubeToolStripMenuItem_Click);
+            // 
             // DrawForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -469,5 +478,6 @@
         private System.Windows.Forms.Button fillButton;
         private System.Windows.Forms.ToolStripMenuItem boundryFillToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showClipBorderToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showRotatingCubeToolStripMenuItem;
     }
 }
